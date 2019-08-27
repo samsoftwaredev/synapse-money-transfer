@@ -1,0 +1,20 @@
+.Wrapper {
+  margin: 0;
+  padding: 100px 5px;
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .Wrapper {
+    margin: 0 15%;
+    padding: 100px 8px;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .Wrapper {
+    margin: 0 30%;
+    padding: 100px 10px;
+  }
+}

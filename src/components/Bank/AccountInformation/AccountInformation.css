@@ -1,0 +1,18 @@
+.AccountInformationContainer {
+}
+.AccountInformation {
+  margin-bottom: 50px;
+  text-align: center;
+}
+.AccountInformationName {
+  background-color: rgba(252, 176, 69, 1);
+  padding: 10px 20px;
+  margin: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  color: white;
+}
+.AccountInformationType {
+}
+.AccountInformationData {
+}

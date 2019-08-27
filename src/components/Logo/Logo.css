@@ -1,0 +1,10 @@
+.logo {
+  font-size: 1.5em;
+  color: white;
+}
+
+.logo_border {
+  border: 1px solid white;
+  border-radius: 50%;
+  padding: 0 0.3em;
+}

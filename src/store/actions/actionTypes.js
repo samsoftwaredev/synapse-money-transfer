@@ -1,0 +1,15 @@
+export const SYNAPSE_START = "SYNAPSE_START";
+export const SYNAPSE_SUCCESS = "SYNAPSE_SUCCESS";
+export const SYNAPSE_FAIL = "SYNAPSE_FAIL";
+export const SYNAPSE_USER_FOUND = "SYNAPSE_USER_FOUND";
+
+export const BANK_LOADING = "BANK_LOADING";
+export const SET_BANK_ACCOUNTS = "SET_BANK_ACCOUNTS";
+export const SET_BANK_ACCOUNT = "SET_BANK_ACCOUNT";
+export const SET_BANK_LIST = "SET_BANK_LIST";
+export const SET_DEFAULT_ACCOUNT = "SET_DEFAULT_ACCOUNT";
+
+export const AUTH_START = "AUTH_START";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAIL = "AUTH_FAIL";
+export const AUTH_LOGOUT = "AUTH_LOGOUT";

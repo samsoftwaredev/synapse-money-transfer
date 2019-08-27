@@ -1,0 +1,22 @@
+.AuthContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+.AuthMessage {
+  text-align: center;
+  background: #df2828;
+  padding: 10px;
+  border-radius: 5px;
+  color: white;
+  font-weight: 900;
+  box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.75);
+}
+.AuthSwitch {
+  text-decoration: underline;
+  font-weight: 900;
+  padding: 0 2px;
+}
+.AuthSwitch:hover {
+  color: rebeccapurple;
+}

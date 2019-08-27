@@ -1,0 +1,22 @@
+.NavItemsContainer {
+  display: flex;
+  justify-content: space-between;
+}
+.NavItemsLogo {
+  padding-left: 10px;
+  text-decoration: none;
+}
+.NavItemsList {
+  padding-right: 10px;
+  font-size: 1.3em;
+}
+.NavItemsItem {
+  color: white;
+  text-decoration: none;
+  padding: 0 10px;
+}
+.NavItemsItem.active,
+.NavItemsItem:hover {
+  color: white;
+  text-decoration: underline;
+}
