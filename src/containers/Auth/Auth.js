@@ -7,18 +7,16 @@ import "./Auth.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Button from "../../components/UI/Button/Button";
 const Auth = props => {
-  const [email, setEmail] = useState("sewerwe@me.com");
-  const [password, setPassword] = useState("123123");
-  const [name, setName] = useState("Jonathan G.");
-  const [phone, setPhone] = useState("123.123.1234");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [isSignUp, setIsSignUp] = useState(true);
   const inputChangedHandler = (event, input) => {
     input(event.target.value);
   };
   const authUserHandler = event => {
     event.preventDefault();
-    console.log("submit", email, password, isSignUp);
-
     if (isSignUp) {
       props.signUp(email, password, phone, name);
     } else {
@@ -30,7 +28,6 @@ const Auth = props => {
   };
 
   let authRedirect = null;
-  console.log(props.isAuth);
   if (props.isAuth) {
     authRedirect = <Redirect to="/dashboard" />;
   }
