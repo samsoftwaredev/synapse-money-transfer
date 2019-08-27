@@ -1,31 +1,9 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
 
-import * as actions from "../../store/actions/index";
-
 import "./Profile.css";
-import Button from "../UI/Button/Button";
 import Spinner from "../UI/Spinner/Spinner";
 const Profile = props => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-
-  useEffect(() => {
-    setName(props.name || "");
-    setPhone(props.phone || "");
-    setEmail(props.email || "");
-  }, [props]);
-
-  const inputChangeHandler = (event, input) => {
-    input(event.target.value);
-  };
-
-  const updateUserHandler = event => {
-    event.preventDefault();
-    props.updateUser(email, phone, name);
-  };
-
   return (
     <form className="ProfileContainer">
       <h1 className="GlobalTitle ProfileTitle">Profile</h1>
@@ -33,27 +11,20 @@ const Profile = props => {
         <Spinner />
       ) : (
         <Fragment>
-          <input
-            type="text"
-            placeholder="Legal name"
-            value={name}
-            onChange={event => inputChangeHandler(event, setName)}
-          />
-          <input
-            type="text"
-            placeholder="Phone number"
-            value={phone}
-            onChange={event => inputChangeHandler(event, setPhone)}
-          />
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={event => inputChangeHandler(event, setEmail)}
-          />
+          <div>
+            <span className="GlobalLabel ProjectLabel">Name: </span>
+            <span className="GlobalLabel">{props.name}</span>
+          </div>
+          <div>
+            <span className="GlobalLabel ProjectLabel">Phone: </span>
+            <span className="GlobalLabel">{props.phone}</span>
+          </div>
+          <div>
+            <span className="GlobalLabel ProjectLabel">Email: </span>
+            <span className="GlobalLabel">{props.email}</span>
+          </div>
         </Fragment>
       )}
-      <Button clicked={updateUserHandler}>Update Profile</Button>
     </form>
   );
 };
@@ -62,17 +33,9 @@ const mapStateToProps = state => {
     email: state.auth.email,
     name: state.user.name,
     phone: state.user.phone,
+    userIdSynapse: state.auth.userId,
     loading: state.user.loading || state.auth.loading
   };
 };
-const mapDispatchToProps = dispatch => {
-  return {
-    updateUser: (userIdSynapse, email, phone, name) => {
-      dispatch(actions.updateUser(userIdSynapse, email, phone, name));
-    }
-  };
-};
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Profile);
+
+export default connect(mapStateToProps)(Profile);

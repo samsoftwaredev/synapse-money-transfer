@@ -165,21 +165,6 @@ app.post("/view-account", jsonParser, (req, res) => {
     });
 });
 
-app.post("/update-user", jsonParser, (req, res) => {
-  getUser(req.body.userId)
-    .then(response => {
-      return response.updateUser(req.body.updatedData);
-    })
-    .then(response => {
-      console.log(response.data);
-      res.send(response.data);
-    })
-    .catch(err => {
-      console.log(err);
-      res.send(err);
-    });
-});
-
 app.post("/all-users", jsonParser, (req, res) => {
   console.log(req.body);
 

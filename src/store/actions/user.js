@@ -102,37 +102,3 @@ export const searchForUserSynapse = userEmail => {
       });
   };
 };
-
-export const updateUser = (userIdSynapse, email, phone, name) => {
-  return dispatch => {
-    dispatch(synapseStart());
-    axios
-      .post("/update-user", {
-        userId: userIdSynapse,
-        updatedData: {
-          logins: [
-            {
-              email: email
-            }
-          ],
-          phone_numbers: [phone],
-          legal_names: [name]
-        }
-      })
-      .then(response => {
-        console.log(response.data);
-        dispatch(
-          synapseSuccess({
-            userId: response.data.body._id,
-            name: response.data.body.legal_names[0],
-            phone: response.data.body.phone_numbers[0],
-            refreshToken: response.data.body.refresh_token
-          })
-        );
-      })
-      .catch(error => {
-        dispatch(synapseFail(error));
-        console.log(error);
-      });
-  };
-};

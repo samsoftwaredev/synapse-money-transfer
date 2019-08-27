@@ -9,6 +9,5 @@ export {
 export {
   getUserSynapse,
   createUserSynapse,
-  searchForUserSynapse,
-  updateUser
+  searchForUserSynapse
 } from "./user";
