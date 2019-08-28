@@ -37,6 +37,13 @@ export const authSynapseSuccess = userData => {
   };
 };
 
+export const authSynapseStart = userData => {
+  return {
+    type: actionTypes.SYNAPSE_START,
+    ...userData
+  };
+};
+
 export const authFail = error => {
   return {
     type: actionTypes.AUTH_FAIL,
@@ -99,8 +106,7 @@ export const signUp = (email, password, phone, name) => {
           userAuth.data.expiresIn,
           userAuth.data.localId
         );
-        dispatch(authStart());
-
+        dispatch(authSynapseStart());
         const response = await axios.post("/create-user", userData);
 
         localStorage.setItem("userIdSynapse", response.data.body._id);
@@ -112,7 +118,6 @@ export const signUp = (email, password, phone, name) => {
             refreshToken: response.data.body.refresh_token
           })
         );
-        dispatch(authStart());
         const storeId = await axios.patch(
           `https://synapse-6cfd7.firebaseio.com/users/${userAuth.data.localId}.json`,
           {
@@ -171,6 +176,7 @@ export const logIn = (email, password) => {
         console.log("LogIn", response);
         localStorage.setItem("userIdSynapse", response.data.userIdSynapse);
         localStorage.setItem("accountId", response.data.accountId);
+        dispatch(authSynapseStart());
         return axios.post("/get-user", {
           userId: response.data.userIdSynapse
         });
@@ -219,7 +225,7 @@ const reAuth = (dispatch, token, userIdSynapse, expirationDate) => {
     .then(response => {
       localStorage.setItem("userIdSynapse", response.data.userIdSynapse);
       localStorage.setItem("accountId", response.data.accountId);
-
+      dispatch(authSynapseStart());
       return axios.post("/get-user", {
         userId: userIdSynapse
       });

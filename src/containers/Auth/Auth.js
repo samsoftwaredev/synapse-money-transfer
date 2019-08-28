@@ -21,7 +21,9 @@ const Auth = props => {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
     }
     if (field.isName) {
-      return /^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/.test(value);
+      return /^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/.test(
+        value.toLowerCase()
+      );
     }
     if (field.isPhone) {
       return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(value);
@@ -43,7 +45,7 @@ const Auth = props => {
     console.log(input);
     if (!input) return false;
     if (input.isEmail) setErrorMsg("Invalid email address");
-    if (input.isName) setErrorMsg("Invalid legal name");
+    if (input.isName) setErrorMsg("Invalid name");
     if (input.isPhone) setErrorMsg("Invalid phone number");
     if (input.isPassword) setErrorMsg("Invalid password");
     return true;
