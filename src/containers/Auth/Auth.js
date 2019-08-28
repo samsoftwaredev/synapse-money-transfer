@@ -7,20 +7,65 @@ import "./Auth.css";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import Button from "../../components/UI/Button/Button";
 const Auth = props => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const field = { value: "", valid: false };
+  const [form, setForm] = useState({
+    email: { ...field, isEmail: true, primary: true },
+    password: { ...field, isPassword: true, primary: true },
+    name: { ...field, isName: true },
+    phone: { ...field, isPhone: true }
+  });
   const [isSignUp, setIsSignUp] = useState(true);
-  const inputChangedHandler = (event, input) => {
-    input(event.target.value);
+  const [errorMsg, setErrorMsg] = useState("");
+  const isValidHandler = (field, value) => {
+    if (field.isEmail) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    }
+    if (field.isName) {
+      return /^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/.test(value);
+    }
+    if (field.isPhone) {
+      return /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/.test(value);
+    }
+    return true;
+  };
+  const inputChangedHandler = (event, field) => {
+    console.log(event.target.value, field);
+    let valid = isValidHandler(field, event.target.value);
+    let fieldCopy = field;
+    fieldCopy.value = event.target.value;
+    fieldCopy.valid = valid;
+    setForm({
+      ...form,
+      fieldCopy: { ...fieldCopy }
+    });
+  };
+  const errorMsgHandler = input => {
+    console.log(input);
+    if (!input) return false;
+    if (input.isEmail) setErrorMsg("Invalid email address");
+    if (input.isName) setErrorMsg("Invalid legal name");
+    if (input.isPhone) setErrorMsg("Invalid phone number");
+    if (input.isPassword) setErrorMsg("Invalid password");
+    return true;
   };
   const authUserHandler = event => {
     event.preventDefault();
+    setErrorMsg("");
+    let formArr = Object.values({ ...form });
+    let error = errorMsgHandler(
+      formArr.find(field => field.primary && !field.valid)
+    );
     if (isSignUp) {
-      props.signUp(email, password, phone, name);
+      error = errorMsgHandler(formArr.find(field => !field.valid));
+      if (!error)
+        props.signUp(
+          form.email.value,
+          form.password.value,
+          form.phone.value,
+          form.name.value
+        );
     } else {
-      props.logIn(email, password);
+      if (!error) props.logIn(form.email.value, form.password.value);
     }
   };
   const switchHandler = () => {
@@ -33,22 +78,22 @@ const Auth = props => {
   }
 
   let errorMessage = null;
-  if (props.error) {
-    errorMessage = <p className="AuthMessage">{props.error}</p>;
+  if (props.error || errorMsg) {
+    errorMessage = <p className="AuthMessage">{props.error || errorMsg}</p>;
   }
   let display = isSignUp ? (
     <Fragment>
       <input
         type="text"
         placeholder="Full legal name"
-        value={name}
-        onChange={event => inputChangedHandler(event, setName)}
+        value={form.name.value}
+        onChange={event => inputChangedHandler(event, form.name)}
       />
       <input
         type="text"
         placeholder="Phone number"
-        value={phone}
-        onChange={event => inputChangedHandler(event, setPhone)}
+        value={form.phone.value}
+        onChange={event => inputChangedHandler(event, form.phone)}
       />
       <div>
         <Button clicked={event => authUserHandler(event)}>Sing Up</Button>
@@ -86,14 +131,14 @@ const Auth = props => {
             <input
               type="email"
               placeholder="Email"
-              value={email}
-              onChange={event => inputChangedHandler(event, setEmail)}
+              value={form.email.value}
+              onChange={event => inputChangedHandler(event, form.email)}
             />
             <input
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={event => inputChangedHandler(event, setPassword)}
+              value={form.password.value}
+              onChange={event => inputChangedHandler(event, form.password)}
             />
           </Fragment>
           {display}
