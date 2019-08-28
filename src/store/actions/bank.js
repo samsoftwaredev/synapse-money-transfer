@@ -1,6 +1,13 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 
+export const bankFail = error => {
+  return {
+    type: actionTypes.BANK_FAIL,
+    error: error
+  };
+};
+
 export const bankLoading = () => {
   return {
     type: actionTypes.BANK_LOADING
@@ -28,6 +35,13 @@ export const setBankList = bankList => {
   };
 };
 
+export const successTransaction = transaction => {
+  return {
+    type: actionTypes.SUCCESS_TRANSACTION,
+    transaction: transaction
+  };
+};
+
 export const setDefaultAccount = (accountId, userId, bankData) => {
   localStorage.setItem("accountId", accountId);
   setUserBankAccount(bankData);
@@ -50,6 +64,7 @@ export const getUserBankAccount = (accountId, userIdSynapse) => {
         dispatch(setUserBankAccount(response.data));
       })
       .catch(error => {
+        dispatch(bankFail(error));
         console.log(error);
       });
   };
@@ -79,6 +94,7 @@ export const getUserBank = (
         dispatch(setUserBank(response.data.nodes));
       })
       .catch(error => {
+        dispatch(bankFail(error));
         console.log(error);
       });
   };
@@ -93,6 +109,7 @@ export const getBankList = () => {
         dispatch(setBankList(response.data.banks));
       })
       .catch(error => {
+        dispatch(bankFail(error));
         console.log(error);
       });
   };
@@ -111,7 +128,7 @@ export const createTransaction = (userIdSynapse, accountId, amount) => {
 
         return axios.post("/create-transaction", {
           userId: userIdSynapse,
-          accountId: depositAccId,
+          accountId: accountId,
           transaction: {
             to: {
               type: "ACH-US",
@@ -126,9 +143,11 @@ export const createTransaction = (userIdSynapse, accountId, amount) => {
       })
       .then(response => {
         console.log(response);
+        dispatch(successTransaction(response));
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        dispatch(bankFail(error));
+        console.log(error);
       });
   };
 };

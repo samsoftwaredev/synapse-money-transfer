@@ -5,6 +5,7 @@ const ip = require("ip");
 
 //my modules
 const client = require("./modules/synapseInit");
+const stringify = require("./modules/stringify");
 let port = process.env.PORT || 3001;
 
 const app = express();
@@ -145,8 +146,8 @@ app.post("/create-transaction", jsonParser, (req, res) => {
       res.send(response.data);
     })
     .catch(err => {
-      console.log(err);
-      res.send(err);
+      console.log(stringify(err.data));
+      res.send(stringify(err, null, 2));
     });
 });
 

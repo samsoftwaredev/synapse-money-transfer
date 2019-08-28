@@ -1,65 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 
 import "./TransferMoney.css";
-import Button from "../UI/Button/Button";
+import Amount from "./Amount/Amount";
+import Receiver from "./Receiver/Receiver";
+import Spinner from "../UI/Spinner/Spinner";
 
 const TransferMoney = props => {
-  const [amount, setAmount] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
   const [userSelected, setUserSelected] = useState({});
-  const inputChangeHandler = (event, input) => {
-    input(event.target.value);
-  };
-  const searchUserHandler = (event, user) => {
-    event.preventDefault();
-    props.searchUser(user);
-  };
-  const userSelectedHandler = (event, user) => {
-    event.preventDefault();
+  const userSelectedHandler = user => {
     setUserSelected(user);
-    console.log(user);
-    setUserName(user.name);
   };
-  const transferMoneyHandler = event => {
+
+  const searchUserHandler = (event, userEmail) => {
+    event.preventDefault();
+    props.searchUser(userEmail);
+  };
+
+  const transferMoneyHandler = (event, amount) => {
     event.preventDefault();
     props.createTransaction(props.userIdSynapse, userSelected, amount);
   };
+  let section =
+    Object.keys(userSelected).length <= 0 ? (
+      <Receiver
+        userFound={props.userFound}
+        searchUser={searchUserHandler}
+        userSelected={userSelectedHandler}
+      />
+    ) : (
+      <Amount
+        userName={userSelected.name}
+        transferMoney={transferMoneyHandler}
+      />
+    );
   return (
     <form className="TransferMoneyContainer">
       <h1 className="TransferMoneyTitle GlobalTitle">Transfer Money</h1>
-      <p className="TransferMoneySubtitle GlobalLabel">To:</p>
-      <input
-        type="text"
-        placeholder="User email"
-        value={userEmail}
-        onChange={event => inputChangeHandler(event, setUserEmail)}
-      />
-      {userName}
-      <Button clicked={event => searchUserHandler(event, userEmail)}>
-        Search
-      </Button>
-
-      {props.userFound.map(user => {
-        return (
-          <p
-            onClick={event => userSelectedHandler(event, user)}
-            key={user.userId}
-          >
-            {user.name}
-          </p>
-        );
-      })}
-      <p className="TransferMoneySubtitle GlobalLabel">Enter Amount:</p>
-      <input
-        type="text"
-        placeholder="$50.00"
-        value={amount}
-        onChange={event => inputChangeHandler(event, setAmount)}
-      />
-      <Button clicked={transferMoneyHandler}>Send Money</Button>
+      {props.loading ? <Spinner /> : <Fragment>{section}</Fragment>}
     </form>
   );
 };
@@ -67,6 +46,7 @@ const mapStateToProps = state => {
   return {
     bankAccs: state.bank.bankAccounts,
     defaultBankAcc: state.bank.defaultBankAccount,
+    loading: state.user.loading || state.bank.loading,
     userFound: state.user.userFound,
     userIdSynapse: state.user.userId
   };
