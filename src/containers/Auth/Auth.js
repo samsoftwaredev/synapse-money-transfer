@@ -31,7 +31,6 @@ const Auth = props => {
     return true;
   };
   const inputChangedHandler = (event, field) => {
-    console.log(event.target.value, field);
     let valid = isValidHandler(field, event.target.value);
     let fieldCopy = field;
     fieldCopy.value = event.target.value;
@@ -42,7 +41,6 @@ const Auth = props => {
     });
   };
   const errorMsgHandler = input => {
-    console.log(input);
     if (!input) return false;
     if (input.isEmail) setErrorMsg("Invalid email address");
     if (input.isName) setErrorMsg("Invalid name");
